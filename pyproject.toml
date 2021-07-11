@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "wallpaperub"
+version = "0.1.0"
+description = "Change wallpapers on Ubuntu"
+authors = ["Greatjudge"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+bs4 = "^0.0.1"
+requests = "^2.25.1"
+lxml = "^4.6.3"
+pathlib = "^1.0.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
