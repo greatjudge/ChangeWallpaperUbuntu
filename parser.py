@@ -14,10 +14,13 @@ from abc import ABC, abstractmethod
 
 
 class Requester:
-    @staticmethod
-    def get_html(url, tsleep=5):
+    def __init__(self):
+        self.session = requests.Session()
+        self.session.headers = {'User-Agent': ''}
+
+    def get_html(self, url, tsleep=5):
         sleep(tsleep)
-        res = requests.get(url)
+        res = self.session.get(url)
         if not res.ok:
             print('res no ok')
             print('url', url)
@@ -25,9 +28,8 @@ class Requester:
             return None
         return res.text
 
-    @staticmethod
-    def get_content(url):
-        res = requests.get(url)
+    def get_content(self, url):
+        res = self.session.get(url)
         return res.content
 
     def get_html_list(self, urls):

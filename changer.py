@@ -18,26 +18,30 @@ class ChWallpaper:
         data = self.read_data()
         last_date = parse(data['date']).date()
         if last_date != date.today(): # It need to refactoring
-            last_file = Path(data['last'])
-            last_dir = last_file.parent
-            files_in_dir = list(last_dir.iterdir())
-            index_last = files_in_dir.index(last_file)
-            if index_last == len(files_in_dir) - 1:
-                current_dir = last_dir
-                for dir in self.Directories:
-                    if dir == current_dir:
-                        break
-                current_dir = next(self.Directories)
-                filename = list(current_dir.iterdir())[0]
-            else:
-                filename = files_in_dir[index_last + 1]
-            self.chwall(filename)
+            filename = self._get_new_filename(data)
+            self.chwall(str(filename))
             self.write_ld(str(filename), date.today().isoformat())
 
-    def chwall(self, filename):
-        print('filename', filename)
+    def _get_new_filename(self, data: dict) -> Path:
+        last_file = Path(data['last'])
+        last_dir = last_file.parent
+        files_in_dir = list(last_dir.iterdir())
+        index_last = files_in_dir.index(last_file)
+        if index_last == len(files_in_dir) - 1:
+            current_dir = last_dir
+            for dir in self.Directories:
+                if dir == current_dir:
+                    break
+            current_dir = next(self.Directories)
+            filename = list(current_dir.iterdir())[0]
+        else:
+            filename = files_in_dir[index_last + 1]
+        return filename
+
+    @staticmethod
+    def chwall(filename: str):
         gsettings = Gio.Settings.new('org.gnome.desktop.background')
-        gsettings.set_string('picture-uri', str(filename))
+        gsettings.set_string('picture-uri', filename)
 
     def read_data(self) -> dict:
         with self.mainfile.open() as file:
