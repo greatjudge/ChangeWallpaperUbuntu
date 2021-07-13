@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 import json
 import os
 
@@ -13,8 +14,8 @@ from dotenv import load_dotenv
 class ChWallpaper:
     def __init__(self, dotenv_path: str):
         load_dotenv(dotenv_path)
-        directory_str = os.getenv('WALLPAPERS_DIR')
-        self.mainfile = Path(os.getenv('mainfile.json'))
+        directory_str = os.getenv('WALLPAPERS_DIR_PATH')
+        self.mainfile = Path(os.getenv('MAINFILE_PATH'))
         self.directory = Path(directory_str)
         self.Directories = cycle(self.directory.iterdir())
 
