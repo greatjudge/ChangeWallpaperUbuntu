@@ -16,6 +16,7 @@ Change Wallpaper Ubuntu
    
    
 Содержимое моего файла syncthing.service:  
+
     [Unit]
     Description=Смена обоев при смене дня
 
