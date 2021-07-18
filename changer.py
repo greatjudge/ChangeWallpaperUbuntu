@@ -1,4 +1,5 @@
 import json
+import os
 
 from gi.repository import Gio
 from pathlib import Path
@@ -7,17 +8,20 @@ from itertools import cycle
 from datetime import date
 from dateutil.parser import parse
 
+from dotenv import load_dotenv
 
 class ChWallpaper:
-    directory_str = '/home/greatjudge/Wallpapers/'
-    mainfile = Path('mainfile.json')
-    directory = Path(directory_str)
-    Directories = cycle(directory.iterdir())
+    def __init__(self, dotenv_path: str):
+        load_dotenv(dotenv_path)
+        directory_str = os.getenv('WALLPAPERS_DIR')
+        self.mainfile = Path(os.getenv('mainfile.json'))
+        self.directory = Path(directory_str)
+        self.Directories = cycle(self.directory.iterdir())
 
     def change(self):
         data = self.read_data()
         last_date = parse(data['date']).date()
-        if last_date != date.today(): # It need to refactoring
+        if last_date != date.today():
             filename = self._get_new_filename(data)
             self.chwall(str(filename))
             self.write_ld(str(filename), date.today().isoformat())
@@ -60,7 +64,7 @@ class ChWallpaper:
 
 
 def main():
-    chw = ChWallpaper()
+    chw = ChWallpaper('/home/greatjudge/WallPaper/ChangeWallpaperUbuntu/.env')
     chw.change()
 
 
