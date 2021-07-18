@@ -48,6 +48,12 @@ class ChWallpaper:
         gsettings.set_string('picture-uri', filename)
 
     def read_data(self) -> dict:
+        if not self.mainfile.exists():
+            first_filename = next(next(self.directory.iterdir()).iterdir())
+            with self.mainfile.open('w') as file:
+                json.dump({'date': date.today().isoformat(),
+                           'last': str(first_filename)},
+                          file)
         with self.mainfile.open() as file:
            data = json.load(file)
         return data
