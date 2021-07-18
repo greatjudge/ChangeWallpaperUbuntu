@@ -49,10 +49,9 @@ class ChWallpaper:
 
     def read_data(self) -> dict:
         if not self.mainfile.exists():
-            first_filename = next(next(self.directory.iterdir()).iterdir())
             with self.mainfile.open('w') as file:
                 json.dump({'date': date.today().isoformat(),
-                           'last': str(first_filename)},
+                           'last': str(self._first_filename())},
                           file)
         with self.mainfile.open() as file:
            data = json.load(file)
@@ -67,6 +66,9 @@ class ChWallpaper:
     def write_data(self, data: dict):
         with self.mainfile.open('w') as file:
             json.dump(data, file)
+
+    def _first_filename(self) -> Path:
+        return next(next(self.directory.iterdir()).iterdir())
 
 
 def main():
